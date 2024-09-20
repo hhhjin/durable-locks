@@ -1,6 +1,15 @@
 {
   "name": "durable-locks",
   "version": "0.0.1",
+  "description": "A distributed locking mechanism using Cloudflare Durable Objects.",
+  "keywords": [
+    "durable",
+    "lock",
+    "distributed",
+    "cloudflare",
+    "workers",
+    "typescript"
+  ],
   "scripts": {
     "test": "vitest"
   },
@@ -17,5 +26,9 @@
     "typescript": "^5.5.2",
     "vitest": "2.0.5",
     "wrangler": "^3.60.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hhhjin/durable-objects.git"
   }
 }
