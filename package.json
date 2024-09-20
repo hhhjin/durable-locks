@@ -1,16 +1,21 @@
 {
   "name": "durable-locks",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
-    "cf-typegen": "wrangler types"
+    "test": "vitest"
   },
+  "main": "./lib/index.ts",
+  "module": "./lib/index.ts",
+  "types": "./lib/index.ts",
+  "files": [
+    "./lib"
+  ],
+  "license": "MIT",
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.5.2",
     "@cloudflare/workers-types": "^4.20240909.0",
     "typescript": "^5.5.2",
+    "vitest": "2.0.5",
     "wrangler": "^3.60.3"
   }
 }
