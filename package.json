@@ -1,6 +1,6 @@
 {
   "name": "durable-locks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A distributed locking mechanism using Cloudflare Durable Objects.",
   "keywords": [
     "durable",
@@ -11,24 +11,33 @@
     "typescript"
   ],
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build": "tsup"
   },
-  "main": "./lib/index.ts",
-  "module": "./lib/index.ts",
-  "types": "./lib/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
-    "./lib"
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.2",
     "@cloudflare/workers-types": "^4.20240909.0",
+    "tsup": "^8.3.0",
     "typescript": "^5.5.2",
     "vitest": "2.0.5",
     "wrangler": "^3.60.3"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hhhjin/durable-objects.git"
+    "url": "https://github.com/hhhjin/durable-locks.git"
   }
 }
