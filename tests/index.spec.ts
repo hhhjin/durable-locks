@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import "../src/index";
 
 async function request(
-  method: "acquire" | "release",
+  method: "acquire" | "release" | "isLocked",
   id: string,
   { ttl, lease }: { ttl?: number; lease?: number }
 ) {
-  const url = new URL(`http://self/${method}/${id}`);
+  const url = new URL(`http://localhost/${method}/${id}/`);
   if (ttl) url.searchParams.set("ttl", ttl.toString());
   if (lease) url.searchParams.set("lease", lease.toString());
   const res = await SELF.fetch(url);
@@ -83,13 +83,23 @@ describe("Worker", () => {
 
   it("returns independant lease depending on the ID", async () => {
     const res1 = await request("acquire", "1", { ttl: 10000 });
-
     const res2 = await request("acquire", "2", { ttl: 10000 });
-
     const res3 = await request("acquire", "3", { ttl: 10000 });
 
     expect(res1).property("lease").equal(1);
     expect(res2).property("lease").equal(1);
     expect(res3).property("lease").equal(1);
+  });
+
+  it("returns true if locked", async () => {
+    const res1 = await request("acquire", "1", { ttl: 1000 });
+    const res2 = await request("isLocked", "1", {});
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const res3 = await request("isLocked", "1", {});
+
+    expect(res1).property("lease").equal(1);
+    expect(res2).equal(true);
+    expect(res3).equal(false);
   });
 });

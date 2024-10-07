@@ -1,6 +1,6 @@
 {
   "name": "durable-locks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A distributed locking mechanism using Cloudflare Durable Objects.",
   "keywords": [
     "durable",
@@ -11,7 +11,7 @@
     "typescript"
   ],
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
     "build": "tsup"
   },
   "main": "./dist/index.js",

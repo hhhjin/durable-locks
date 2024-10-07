@@ -23,6 +23,8 @@ export default {
       );
     } else if (url.pathname.startsWith("/release")) {
       return new Response(JSON.stringify(await durableLock.release(lease)));
+    } else if (url.pathname.startsWith("/isLocked")) {
+      return new Response(JSON.stringify(await durableLock.isLocked()));
     }
 
     return new Response(null, { status: 404 });

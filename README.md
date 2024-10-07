@@ -98,6 +98,15 @@ Returns:
 - `Failed`: Lock release failed due to one of the reasons:
   - `NO_LONGER_VALID`: The lease is no longer valid or the lock has already expired.
 
+#### `isLocked(): Promise<boolean>`
+
+Checks if the lock is currently locked.
+
+Returns:
+
+- `true`: Lock is locked.
+- `false`: Lock is not locked.
+
 ## Alarm System
 
 The `DurableLock` class implements an alarm system to automatically clean up expired locks after a hard deadline of 1 day.

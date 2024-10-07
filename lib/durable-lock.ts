@@ -42,6 +42,10 @@ export class DurableLock extends DurableObject {
         res = await this.release(parseInt(lease));
         return new Response(JSON.stringify(res));
 
+      case "/isLocked":
+        res = await this.isLocked();
+        return new Response(JSON.stringify(res));
+
       default:
         throw new Error("Invalid pathname");
     }
@@ -57,7 +61,7 @@ export class DurableLock extends DurableObject {
 
     // New request for acquiring lock
     if (!lease) {
-      if (new Date().getTime() < lock.deadline) {
+      if (Date.now() < lock.deadline) {
         return { success: false, reason: "BORROWED" };
       }
 
@@ -89,6 +93,11 @@ export class DurableLock extends DurableObject {
     return true;
   }
 
+  async isLocked() {
+    const lock = await this.ctx.storage.get<Lock>("lock");
+    return lock && lock.deadline > Date.now();
+  }
+
   private hardDeadline() {
     // 1 day
     return new Date(Date.now() + 1000 * 86400);
@@ -116,5 +125,10 @@ export function useDurableLock(
     return await res.json<Failed | true>();
   }
 
-  return { acquire, release };
+  async function isLocked() {
+    const res = await durableLock.fetch(`http://localhost/isLocked`);
+    return await res.json<boolean>();
+  }
+
+  return { acquire, release, isLocked };
 }
