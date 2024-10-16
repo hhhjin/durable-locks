@@ -81,7 +81,7 @@ export class DurableLock extends DurableObject {
     return { success: true, lease, deadline };
   }
 
-  async release(lease: number): Promise<Failed | true> {
+  async release(lease: number): Promise<Failed | { success: true }> {
     const lock = await this.ctx.storage.get<Lock>("lock");
 
     if (!lock || lease !== lock.lease || lock.deadline < Date.now()) {
@@ -90,12 +90,12 @@ export class DurableLock extends DurableObject {
 
     await this.ctx.storage.put<Lock>("lock", { lease, deadline: 0 });
 
-    return true;
+    return { success: true };
   }
 
   async isLocked() {
     const lock = await this.ctx.storage.get<Lock>("lock");
-    return lock && lock.deadline > Date.now();
+    return lock ? lock.deadline > Date.now() : false;
   }
 
   private hardDeadline() {
@@ -122,7 +122,7 @@ export function useDurableLock(
     const res = await durableLock.fetch(
       `http://localhost/release?lease=${lease}`
     );
-    return await res.json<Failed | true>();
+    return await res.json<Failed | { success: true }>();
   }
 
   async function isLocked() {
